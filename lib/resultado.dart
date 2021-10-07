@@ -6,7 +6,7 @@ class Resultado extends StatelessWidget {
 
   Resultado(this.pontuacao, this.reiniciar);
 
-  String mostrarResultado(int pontuacao) {
+  String mostrarResultado() {
     if (pontuacao < 8) {
       return 'Parabéns!';
     } else if (pontuacao < 12) {
@@ -24,7 +24,7 @@ class Resultado extends StatelessWidget {
       children: <Widget>[
         Center(
           child: Text(
-            mostrarResultado(pontuacao),
+            mostrarResultado(),
             style: TextStyle(fontSize: 28),
           ),
         ),

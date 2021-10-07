@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'questao.dart';
-import 'resposta.dart';
+import 'questionario.dart';
 import 'resultado.dart';
 
 main() => runApp(new PerguntaApp());
 
 class PerguntaApp extends StatefulWidget {
-  PerguntaAppState createState() {
-    return PerguntaAppState();
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
   }
 }
 
-class PerguntaAppState extends State<PerguntaApp> {
-  int perguntaSelecionada = 0;
-  int valorTotal = 0;
-  final List<Map<String, Object>> perguntas = const [
+class _PerguntaAppState extends State<PerguntaApp> {
+  int _perguntaSelecionada = 0;
+  int _valorTotal = 0;
+  final List<Map<String, Object>> _perguntas = const [
     {
       'texto': 'Qual é a sua cor favorita?',
       'resposta': [
@@ -44,49 +43,36 @@ class PerguntaAppState extends State<PerguntaApp> {
     },
   ];
 
-  void responder(int pontuacao) {
+  void _responder(int pontuacao) {
     setState(() {
-      perguntaSelecionada++;
-      valorTotal += pontuacao;
+      _perguntaSelecionada++;
+      _valorTotal += pontuacao;
     });
-    //return valorTotal;
   }
 
   void reiniciar() {
     setState(() {
-       perguntaSelecionada = 0;
-       valorTotal = 0;
+      _perguntaSelecionada = 0;
+      _valorTotal = 0;
     });
-   
   }
 
-  bool temPerguntaSelecionada() {
-    return perguntaSelecionada < perguntas.length;
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
   }
 
   Widget build(BuildContext context) {
-    List<Map<String, Object>> respostas = temPerguntaSelecionada()
-        ? perguntas[perguntaSelecionada].cast()['resposta']
-        : [];
     return new MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Perguntas'),
         ),
-        body: temPerguntaSelecionada()
-            ? Center(
-                child: Column(
-                  children: <Widget>[
-                    Questao(perguntas[perguntaSelecionada]['texto'].toString()),
-                    ...respostas.map((text) => Resposta(
-                        text['texto'].toString(),
-                        () => responder(int.parse(text['pontuacao'].toString()))
-                        ),
-                    ),
-                  ],
-                ),
-              )
-            : Resultado(valorTotal, reiniciar),
+        body: temPerguntaSelecionada
+            ? Questionario(
+                perguntas: _perguntas,
+                perguntaSelecionada: _perguntaSelecionada,
+                quandoResponder: _responder)
+            : Resultado(_valorTotal, reiniciar),
       ),
     );
   }
