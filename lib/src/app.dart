@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_perguntas/src/pergunta.dart';
+import 'package:projeto_perguntas/src/questionario.dart';
+import 'package:projeto_perguntas/src/resposta.dart';
+import 'package:projeto_perguntas/src/resultado.dart';
 
 class App extends StatefulWidget {
   _AppState createState() {
@@ -43,7 +47,13 @@ class _AppState extends State<App> {
       _perguntaSelecionada++;
       _totalPontuacao += pontuacao;
     });
-    
+  }
+
+  void reiniciar() {
+    setState(() {
+      _perguntaSelecionada = 0;
+      _totalPontuacao = 0;
+    });
   }
 
   bool get temPerguntaSelecionada {
@@ -51,40 +61,18 @@ class _AppState extends State<App> {
   }
 
   Widget build(BuildContext context) {
-    List<Map<String, Object>> _respostas =
-        _perguntas[_perguntaSelecionada].cast()['resposta'];
+    
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Perguntas versão 2'),
         ),
-        body: temPerguntaSelecionada ? Column(
-          children: <Widget>[
-            Center(
-              child: Text(
-                _perguntas[_perguntaSelecionada]['texto'].toString(),
-                style: TextStyle(fontSize: 28, color: Colors.blue),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            ElevatedButton(
-              child: Text(_respostas[0]['texto'].toString()),
-              onPressed: () => _responder(_respostas[0].cast()['pontuacao']),
-            ),
-            ElevatedButton(
-              child: Text(_respostas[1]['texto'].toString()),
-              onPressed: () => _responder(_respostas[1].cast()['pontuacao']),
-            ),
-            ElevatedButton(
-              child: Text(_respostas[2]['texto'].toString()),
-              onPressed: () => _responder(_respostas[2].cast()['pontuacao']),
-            ),
-            ElevatedButton(
-              child: Text(_respostas[3]['texto'].toString()),
-              onPressed: () => _responder(_respostas[3].cast()['pontuacao']),
-            )
-          ],
-        ): null,
+        body: temPerguntaSelecionada
+            ? Questionario(
+              perguntas: _perguntas, 
+              perguntaSelecionada: _perguntaSelecionada, 
+              quandoResponder: _responder)
+            : Resultado(_totalPontuacao, reiniciar),
       ),
     );
   }
