@@ -1,0 +1,6 @@
+#EXTM3U
+#EXT-X-PLAYLIST-TYPE:VOD
+############################LANÇAMENTOS#########################
+#EXTINF:-1 group-title="LANÇAMENTOS" tvg-logo="logo do filme",nome do filme
+http://192.168.100.93:8080/Filmes/Eternos%202021%20%28720p%20-%20BD-Rip%29/Eternos%202021%20%28720p%20-%20BD-Rip%29.mp4
+#EXT-X-ENDLIST
